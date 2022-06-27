@@ -153,7 +153,26 @@ func (b *Body) SetAttributeRaw(name string, tokens Tokens) *Attribute {
 	}
 	return attr
 }
+func (b *Body) CustomSetAttributeRaw(name string, tokens Tokens) *Attribute {
+	attr := b.GetAttribute(name)
+	expr := NewExpressionRaw(tokens)
 
+	attr = newAttribute()
+	attr.init(name, expr)
+	b.appendItem(attr)
+
+	return attr
+}
+func (b *Body) CustomSetAttributeValue(name string, val cty.Value) *Attribute {
+	attr := b.GetAttribute(name)
+	expr := NewExpressionLiteral(val)
+
+	attr = newAttribute()
+	attr.init(name, expr)
+	b.appendItem(attr)
+
+	return attr
+}
 // SetAttributeValue either replaces the expression of an existing attribute
 // of the given name or adds a new attribute definition to the end of the block.
 //
